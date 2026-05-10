@@ -1,63 +1,52 @@
-import React from "react";
-import { Image, Pressable, Text, TextInput, View } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet, Text, Button, Switch } from "react-native";
 
 const HomeScreen = () => {
-  const [name, setName] = React.useState("");
+  const items = Array.from({ length: 6 }, (_, i) => `Item ${i + 1}`);
+
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
   return (
-    <View>
-      <Text numberOfLines={3}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor sunt
-        adipisci quis recusandae explicabo voluptas tenetur nulla, facilis
-        facere modi?
-      </Text>
-
-      {/* From Expternal source */}
-      <Image
-        source={{
-          uri: "https://images.pexels.com/photos/3923064/pexels-photo-3923064.jpeg",
-        }}
-        width={200}
-        height={200}
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{
+        padding: 16,
+        alignItems: "center",
+      }}
+    >
+      {items.map((item) => (
+        <Text
+          key={item}
+          style={{
+            backgroundColor: "white",
+            padding: 16,
+            borderRadius: 10,
+            marginBottom: 10,
+            shadowColor: "#000",
+            shadowOpacity: 0.05,
+            shadowRadius: 4,
+            elevation: 2,
+          }}
+        >
+          {item}
+        </Text>
+      ))}
+      <Button
+        title="Hello i am a button"
+        color="red"
+        onPress={() => alert("Hello world")}
       />
 
-      {/* From local source */}
-      <Image
-        source={require("@/assets/images/icon.png")}
-        style={{ width: 200, height: 200 }}
-        blurRadius={30}
+      <Switch
+        value={isDarkMode}
+        onValueChange={setIsDarkMode}
+        trackColor={{ false: "#ddd", true: "#6c63ff" }}
+        thumbColor={"violet"}
       />
-
-      <TextInput
-        placeholder="Enter your name"
-        value={name}
-        onChangeText={setName}
-        placeholderTextColor={"red"}
-        style={{
-          borderWidth: 1,
-          borderColor: "gray",
-          marginTop: 10,
-          fontSize: 20,
-        }}
-      />
-
-      <Pressable
-        onPress={() => alert("Button Pressed")}
-        style={({ pressed }) => ({
-          backgroundColor: pressed ? "#4a42d4" : "#6c63ff",
-        })}
-        hitSlop={{
-          top: 10,
-          bottom: 10,
-          left: 20,
-          right: 20,
-        }}
-      >
-        {({ pressed }) =>
-          pressed ? <Text>Pressing...</Text> : <Text>Press Me</Text>
-        }
-      </Pressable>
-    </View>
+    </ScrollView>
   );
 };
 
 export default HomeScreen;
+
+const styles = StyleSheet.create({});
