@@ -1,98 +1,63 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from "react";
+import { Image, Pressable, Text, TextInput, View } from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+const HomeScreen = () => {
+  const [name, setName] = React.useState("");
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
+    <View>
+      <Text numberOfLines={3}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor sunt
+        adipisci quis recusandae explicabo voluptas tenetur nulla, facilis
+        facere modi?
+      </Text>
+
+      {/* From Expternal source */}
+      <Image
+        source={{
+          uri: "https://images.pexels.com/photos/3923064/pexels-photo-3923064.jpeg",
+        }}
+        width={200}
+        height={200}
+      />
+
+      {/* From local source */}
+      <Image
+        source={require("@/assets/images/icon.png")}
+        style={{ width: 200, height: 200 }}
+        blurRadius={30}
+      />
+
+      <TextInput
+        placeholder="Enter your name"
+        value={name}
+        onChangeText={setName}
+        placeholderTextColor={"red"}
+        style={{
+          borderWidth: 1,
+          borderColor: "gray",
+          marginTop: 10,
+          fontSize: 20,
+        }}
+      />
+
+      <Pressable
+        onPress={() => alert("Button Pressed")}
+        style={({ pressed }) => ({
+          backgroundColor: pressed ? "#4a42d4" : "#6c63ff",
+        })}
+        hitSlop={{
+          top: 10,
+          bottom: 10,
+          left: 20,
+          right: 20,
+        }}
+      >
+        {({ pressed }) =>
+          pressed ? <Text>Pressing...</Text> : <Text>Press Me</Text>
+        }
+      </Pressable>
+    </View>
   );
-}
+};
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
+export default HomeScreen;
