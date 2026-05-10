@@ -1,49 +1,28 @@
-import React, { useState } from "react";
-import { ScrollView, StyleSheet, Text, Button, Switch } from "react-native";
+import { StyleSheet, FlatList, Text, View } from "react-native";
+
+const USERS = [
+  { id: "1", name: "Alice Johnson", role: "Designer" },
+  { id: "2", name: "Bob Smith", role: "Developer" },
+  { id: "3", name: "Carol White", role: "Manager" },
+  { id: "4", name: "David Brown", role: "Developer" },
+  { id: "5", name: "Eve Davis", role: "Designer" },
+];
 
 const HomeScreen = () => {
-  const items = Array.from({ length: 6 }, (_, i) => `Item ${i + 1}`);
-
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{
-        padding: 16,
-        alignItems: "center",
+    <FlatList
+      style={{
+        backgroundColor: "#cfcfcf"
       }}
-    >
-      {items.map((item) => (
-        <Text
-          key={item}
-          style={{
-            backgroundColor: "white",
-            padding: 16,
-            borderRadius: 10,
-            marginBottom: 10,
-            shadowColor: "#000",
-            shadowOpacity: 0.05,
-            shadowRadius: 4,
-            elevation: 2,
-          }}
-        >
-          {item}
-        </Text>
-      ))}
-      <Button
-        title="Hello i am a button"
-        color="red"
-        onPress={() => alert("Hello world")}
-      />
-
-      <Switch
-        value={isDarkMode}
-        onValueChange={setIsDarkMode}
-        trackColor={{ false: "#ddd", true: "#6c63ff" }}
-        thumbColor={"violet"}
-      />
-    </ScrollView>
+      data={USERS}
+      // horizontal
+      keyExtractor={(item) => item.id}
+      contentContainerStyle={{ padding: 16, backgroundColor: "#d536e4" }}
+      renderItem={({ item }) => <Text>{item.name}</Text>}
+      ItemSeparatorComponent={() => (
+        <View style={{ height: 1, backgroundColor: "black" }} />
+      )}
+    />
   );
 };
 
