@@ -1,30 +1,43 @@
+import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StatusBar, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-const index = () => {
-  const inset = useSafeAreaInsets();
-
-  // console.log(inset);
-  // console.log(initialWindowMetrics);
-
+const HomeScreen = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        paddingTop: inset.top,
-        paddingBottom: inset.bottom,
-      }}
-    >
-      <StatusBar barStyle={"dark-content"} />
-      <Text>HomeScreen</Text>
-    </View>
-
-    // <SafeAreaProvider initialMetrics={initialWindowMetrics}></SafeAreaProvider>
+    <SafeAreaView>
+      <StatusBar style="dark"  />
+      <View style={styles.card}>
+        <Text style={styles.title}>HomeScreen</Text>
+        <Text style={styles.subtitle}>Hello</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
-export default index;
+export default HomeScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: "white",
+    borderRadius: 16,
+    padding: 20,
+    margin: 16,
+    elevation: 6,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+  },
+
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+  },
+
+  subtitle: {
+    fontSize: 14,
+    color: "#888",
+    marginTop: 5,
+  },
+});
