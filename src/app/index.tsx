@@ -1,43 +1,42 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
+  const isActive = true;
+
+  // Compose style
+  const buttonStyle = StyleSheet.compose(
+    styles.button,
+    isActive ? styles.activeButton : null,
+  );
+
   return (
-    <SafeAreaView>
-      <StatusBar style="dark"  />
-      <View style={styles.card}>
-        <Text style={styles.title}>HomeScreen</Text>
-        <Text style={styles.subtitle}>Hello</Text>
+    <View style={styles.container}>
+      {/* <View style={[styles.button, isActive && styles.activeButton]}> */}
+      {/* @ts-ignore */}
+      <View style={buttonStyle}>
+        <Text style={styles.buttonText}>Composed Style</Text>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "white",
-    borderRadius: 16,
-    padding: 20,
-    margin: 16,
-    elevation: 6,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  button: {
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 10,
+    backgroundColor: "#ccc",
   },
-
-  title: {
-    fontSize: 20,
+  activeButton: {
+    backgroundColor: "#6C63FF",
+  },
+  buttonText: {
+    color: "white",
     fontWeight: "bold",
-    color: "#333",
-  },
-
-  subtitle: {
-    fontSize: 14,
-    color: "#888",
-    marginTop: 5,
+    fontSize: 16,
   },
 });
