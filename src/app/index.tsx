@@ -1,65 +1,43 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  TextInput,
-  Pressable,
-  Platform,
-} from "react-native";
-
-import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+// Custom Components
+function UnsafeScreen() {
+  return (
+    <View style={{ flex: 1, backgroundColor: "#1c1c1e" }}>
+      <Text style={{ color: "#fff", fontSize: 18, padding: 16 }}>
+        Header (bleed under nothch!)
+      </Text>
+      <Text style={{ color: "#aaa", padding: 16 }}>
+        This content might be hidden behind the status bar in dark mode.
+      </Text>
+    </View>
+  );
+}
+
+function SafeScreen() {
+  return (
+    <SafeAreaView
+      edges={["bottom", "top"]}
+      style={{ flex: 1, backgroundColor: "#1c1c1e" }}
+    >
+      <Text style={{ color: "#fff", fontSize: 18, padding: 16 }}>
+        Header (Safely below notch ✅)
+      </Text>
+      <Text style={{ color: "#aaa", padding: 16 }}>
+        This content respacts the safe area on all devices.
+      </Text>
+    </SafeAreaView>
+  );
+}
 
 const HomeScreen = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <View style={{ flex: 1, justifyContent: "flex-end", padding: 24 }}>
-          <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 24 }}>
-            Login
-          </Text>
-          <TextInput
-            placeholder="Email"
-            style={{
-              borderWidth: 1,
-              borderColor: "#ddd",
-              borderRadius: 10,
-              padding: 14,
-              fontSize: 16,
-              marginBottom: 12,
-            }}
-          />
-          <TextInput
-            placeholder="Password"
-            secureTextEntry
-            style={{
-              borderWidth: 1,
-              borderColor: "#ddd",
-              borderRadius: 10,
-              padding: 14,
-              fontSize: 16,
-              marginBottom: 12,
-            }}
-          />
-          <Pressable
-            style={{
-              backgroundColor: "#6C63FF",
-              padding: 16,
-              borderRadius: 12,
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>
-              Sign In
-            </Text>
-          </Pressable>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <>
+      <SafeScreen />
+      {/* <UnsafeScreen /> */}
+    </>
   );
 };
 
