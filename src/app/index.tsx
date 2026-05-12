@@ -1,94 +1,74 @@
-import React from "react";
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
-
-import * as ScreenOrientation from "expo-screen-orientation";
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
+import { StyleSheet, Switch, Text, useColorScheme, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const themes = {
+  light: {
+    background: "#fff",
+    card: "#f5f5f5",
+    text: "#1a1a1a",
+    subtext: "#666666",
+    accent: "#6c63ff",
+  },
+  dark: {
+    background: "#121212",
+    card: "#1e1e1e",
+    text: "#ffffff",
+    subtext: "#AAAAAA",
+    accent: "#9d97ff",
+  },
+};
+
 const HomeScreen = () => {
-  const { height, width } = useWindowDimensions();
-  // console.log({ height, width });
+  const systemColorScheme = useColorScheme();
+  const [manualDark, setManualDark] = useState<boolean | null>(null);
 
-  const isTablet = width >= 768;
-  const isLandscape = width > height;
+  const isDark =
+    manualDark !== null ? manualDark : systemColorScheme === "dark";
 
-  const lockLanscape = async () => {
-    await ScreenOrientation.lockAsync(
-      ScreenOrientation.OrientationLock.LANDSCAPE,
-    );
-  };
+  const theme = isDark ? themes.dark : themes.light;
 
-  const lockPortrait = async () => {
-    await ScreenOrientation.lockAsync(
-      ScreenOrientation.OrientationLock.PORTRAIT,
-    );
-  };
+  // console.log(systemColorScheme);
 
   return (
-    <SafeAreaView style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: width * 0.06, marginBottom: 18 }}>
-        Responsive Text 📱
-      </Text>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.background }]}
+    >
+      <StatusBar style={manualDark ? "light" : "dark"} />
+      {/* Header */}
+      <View style={[styles.card, { backgroundColor: theme.card }]}>
+        <Text style={[styles.title, { color: theme.text }]}>
+          {isDark ? "🌙 Dark Mode" : "☀️ Light Mode"}
+        </Text>
+        <Text style={[styles.subtitle, { color: theme.subtext }]}>
+          System preference: {systemColorScheme ?? "unknown"}
+        </Text>
+      </View>
 
-      <View style={{ flexDirection: isTablet ? "row" : "column" }}>
-        <View
-          style={{
-            width: isTablet ? width / 2 : width - 32,
-            backgroundColor: "#6C63FF",
-            padding: 20,
-            borderRadius: 12,
-            marginBottom: isTablet ? 0 : 12,
-          }}
-        >
-          <Text style={{ color: "white" }}>Card 1</Text>
-        </View>
-        <View
-          style={{
-            width: isTablet ? width / 2 : width - 32,
-            backgroundColor: "#ff6584",
-            padding: 20,
-            borderRadius: 12,
-          }}
-        >
-          <Text style={{ color: "white" }}>Card 2</Text>
+      {/* Toggle Row */}
+      <View style={[styles.card, { backgroundColor: theme.card }]}>
+        <View style={styles.row}>
+          <Text style={[styles.label, { color: theme.text }]}>
+            Override system theme
+          </Text>
+          <Switch
+            value={manualDark ?? systemColorScheme === "dark"}
+            onValueChange={setManualDark}
+            trackColor={{ false: "#ddd", true: theme.accent }}
+            thumbColor="white"
+          />
         </View>
       </View>
 
-      <Text style={{ color: "#888", marginTop: 16 }}>
-        Screen: {Math.round(width)} x {Math.round(height)} -{" "}
-        {isLandscape ? "Landscape" : "Portrait"}
-      </Text>
-
-      <View style={{ flexDirection: "row", marginTop: 24, gap: 12 }}>
-        <Pressable
-          onPress={lockLanscape}
-          style={{
-            flex: 1,
-            backgroundColor: "#6C63FF",
-            padding: 12,
-            borderRadius: 8,
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "white" }}>Force Landscape 📲</Text>
-        </Pressable>
-        <Pressable
-          onPress={lockPortrait}
-          style={{
-            flex: 1,
-            backgroundColor: "#ff6584",
-            padding: 12,
-            borderRadius: 8,
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "white" }}>Force Portrait 📱</Text>
-        </Pressable>
+      {/* Content Card */}
+      <View style={[styles.card, { backgroundColor: theme.card }]}>
+        <Text style={[styles.title, { color: theme.accent }]}>
+          Themed Card 🎨
+        </Text>
+        <Text style={[styles.subtitle, { color: theme.subtext }]}>
+          Colors adapt to dark/light mode automatically
+        </Text>
       </View>
     </SafeAreaView>
   );
@@ -96,4 +76,15 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 16, gap: 12 },
+  card: { padding: 20, borderRadius: 16 },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  title: { fontSize: 20, fontWeight: "bold" },
+  subtitle: { fontSize: 14, marginTop: 4 },
+  label: { fontSize: 16 },
+});
