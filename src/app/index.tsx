@@ -1,16 +1,97 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 
-const styleA = StyleSheet.create({ text: { color: "red", fontSize: 16 } });
-
-const styleB = StyleSheet.create({
-  text: { fontSize: 24, fontWeight: "bold" },
-});
-
-const flat = StyleSheet.flatten([styleA.text, styleB.text])
+import * as ScreenOrientation from "expo-screen-orientation";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
-  return <Text style={flat}>Flattend Style</Text>;
+  const { height, width } = useWindowDimensions();
+  // console.log({ height, width });
+
+  const isTablet = width >= 768;
+  const isLandscape = width > height;
+
+  const lockLanscape = async () => {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.LANDSCAPE,
+    );
+  };
+
+  const lockPortrait = async () => {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.PORTRAIT,
+    );
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1, padding: 16 }}>
+      <Text style={{ fontSize: width * 0.06, marginBottom: 18 }}>
+        Responsive Text 📱
+      </Text>
+
+      <View style={{ flexDirection: isTablet ? "row" : "column" }}>
+        <View
+          style={{
+            width: isTablet ? width / 2 : width - 32,
+            backgroundColor: "#6C63FF",
+            padding: 20,
+            borderRadius: 12,
+            marginBottom: isTablet ? 0 : 12,
+          }}
+        >
+          <Text style={{ color: "white" }}>Card 1</Text>
+        </View>
+        <View
+          style={{
+            width: isTablet ? width / 2 : width - 32,
+            backgroundColor: "#ff6584",
+            padding: 20,
+            borderRadius: 12,
+          }}
+        >
+          <Text style={{ color: "white" }}>Card 2</Text>
+        </View>
+      </View>
+
+      <Text style={{ color: "#888", marginTop: 16 }}>
+        Screen: {Math.round(width)} x {Math.round(height)} -{" "}
+        {isLandscape ? "Landscape" : "Portrait"}
+      </Text>
+
+      <View style={{ flexDirection: "row", marginTop: 24, gap: 12 }}>
+        <Pressable
+          onPress={lockLanscape}
+          style={{
+            flex: 1,
+            backgroundColor: "#6C63FF",
+            padding: 12,
+            borderRadius: 8,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white" }}>Force Landscape 📲</Text>
+        </Pressable>
+        <Pressable
+          onPress={lockPortrait}
+          style={{
+            flex: 1,
+            backgroundColor: "#ff6584",
+            padding: 12,
+            borderRadius: 8,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white" }}>Force Portrait 📱</Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
+  );
 };
 
 export default HomeScreen;
